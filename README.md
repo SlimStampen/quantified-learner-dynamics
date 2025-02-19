@@ -2,6 +2,8 @@
 
 Using quantified learner dynamics to preserve the integrity of learning and knowledge assessment in adaptive retrieval practice.
 
+<img src="flowchart.png" alt="Flowchart" width="400"/>
+
 ## Notebooks
 
 - [Fitting the XGBoost model](output/02_fit_model.md)
