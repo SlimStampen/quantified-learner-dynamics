@@ -1,0 +1,9 @@
+scripts/00_database_functions.R
+scripts/00_get_practice_data.R
+data/responses_long.csv
+
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+.DS_Store

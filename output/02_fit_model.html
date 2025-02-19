@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style type="text/css">
+@font-face {
+font-family: octicons-link;
+src: url(data:font/woff;charset=utf-8;base64,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) format('woff');
+}
+body {
+-webkit-text-size-adjust: 100%;
+text-size-adjust: 100%;
+color: #333;
+font-family: "Helvetica Neue", Helvetica, "Segoe UI", Arial, freesans, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+font-size: 16px;
+line-height: 1.6;
+word-wrap: break-word;
+}
+a {
+background-color: transparent;
+}
+a:active,
+a:hover {
+outline: 0;
+}
+strong {
+font-weight: bold;
+}
+h1 {
+font-size: 2em;
+margin: 0.67em 0;
+}
+img {
+border: 0;
+}
+hr {
+box-sizing: content-box;
+height: 0;
+}
+pre {
+overflow: auto;
+}
+code,
+kbd,
+pre {
+font-family: monospace, monospace;
+font-size: 1em;
+}
+input {
+color: inherit;
+font: inherit;
+margin: 0;
+}
+html input[disabled] {
+cursor: default;
+}
+input {
+line-height: normal;
+}
+input[type="checkbox"] {
+box-sizing: border-box;
+padding: 0;
+}
+table {
+border-collapse: collapse;
+border-spacing: 0;
+}
+td,
+th {
+padding: 0;
+}
+* {
+box-sizing: border-box;
+}
+input {
+font: 13px / 1.4 Helvetica, arial, nimbussansl, liberationsans, freesans, clean, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+}
+a {
+color: #4078c0;
+text-decoration: none;
+}
+a:hover,
+a:active {
+text-decoration: underline;
+}
+hr {
+height: 0;
+margin: 15px 0;
+overflow: hidden;
+background: transparent;
+border: 0;
+border-bottom: 1px solid #ddd;
+}
+hr:before {
+display: table;
+content: "";
+}
+hr:after {
+display: table;
+clear: both;
+content: "";
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+margin-top: 15px;
+margin-bottom: 15px;
+line-height: 1.1;
+}
+h1 {
+font-size: 30px;
+}
+h2 {
+font-size: 21px;
+}
+h3 {
+font-size: 16px;
+}
+h4 {
+font-size: 14px;
+}
+h5 {
+font-size: 12px;
+}
+h6 {
+font-size: 11px;
+}
+blockquote {
+margin: 0;
+}
+ul,
+ol {
+padding: 0;
+margin-top: 0;
+margin-bottom: 0;
+}
+ol ol,
+ul ol {
+list-style-type: lower-roman;
+}
+ul ul ol,
+ul ol ol,
+ol ul ol,
+ol ol ol {
+list-style-type: lower-alpha;
+}
+dd {
+margin-left: 0;
+}
+code {
+font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+font-size: 12px;
+}
+pre {
+margin-top: 0;
+margin-bottom: 0;
+font: 12px Consolas, "Liberation Mono", Menlo, Courier, monospace;
+}
+.select::-ms-expand {
+opacity: 0;
+}
+.octicon {
+font: normal normal normal 16px/1 octicons-link;
+display: inline-block;
+text-decoration: none;
+text-rendering: auto;
+-webkit-font-smoothing: antialiased;
+-moz-osx-font-smoothing: grayscale;
+-webkit-user-select: none;
+-moz-user-select: none;
+-ms-user-select: none;
+user-select: none;
+}
+.octicon-link:before {
+content: '\f05c';
+}
+.markdown-body:before {
+display: table;
+content: "";
+}
+.markdown-body:after {
+display: table;
+clear: both;
+content: "";
+}
+.markdown-body>*:first-child {
+margin-top: 0 !important;
+}
+.markdown-body>*:last-child {
+margin-bottom: 0 !important;
+}
+a:not([href]) {
+color: inherit;
+text-decoration: none;
+}
+.anchor {
+display: inline-block;
+padding-right: 2px;
+margin-left: -18px;
+}
+.anchor:focus {
+outline: none;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+margin-top: 1em;
+margin-bottom: 16px;
+font-weight: bold;
+line-height: 1.4;
+}
+h1 .octicon-link,
+h2 .octicon-link,
+h3 .octicon-link,
+h4 .octicon-link,
+h5 .octicon-link,
+h6 .octicon-link {
+color: #000;
+vertical-align: middle;
+visibility: hidden;
+}
+h1:hover .anchor,
+h2:hover .anchor,
+h3:hover .anchor,
+h4:hover .anchor,
+h5:hover .anchor,
+h6:hover .anchor {
+text-decoration: none;
+}
+h1:hover .anchor .octicon-link,
+h2:hover .anchor .octicon-link,
+h3:hover .anchor .octicon-link,
+h4:hover .anchor .octicon-link,
+h5:hover .anchor .octicon-link,
+h6:hover .anchor .octicon-link {
+visibility: visible;
+}
+h1 {
+padding-bottom: 0.3em;
+font-size: 2.25em;
+line-height: 1.2;
+border-bottom: 1px solid #eee;
+}
+h1 .anchor {
+line-height: 1;
+}
+h2 {
+padding-bottom: 0.3em;
+font-size: 1.75em;
+line-height: 1.225;
+border-bottom: 1px solid #eee;
+}
+h2 .anchor {
+line-height: 1;
+}
+h3 {
+font-size: 1.5em;
+line-height: 1.43;
+}
+h3 .anchor {
+line-height: 1.2;
+}
+h4 {
+font-size: 1.25em;
+}
+h4 .anchor {
+line-height: 1.2;
+}
+h5 {
+font-size: 1em;
+}
+h5 .anchor {
+line-height: 1.1;
+}
+h6 {
+font-size: 1em;
+color: #777;
+}
+h6 .anchor {
+line-height: 1.1;
+}
+p,
+blockquote,
+ul,
+ol,
+dl,
+table,
+pre {
+margin-top: 0;
+margin-bottom: 16px;
+}
+hr {
+height: 4px;
+padding: 0;
+margin: 16px 0;
+background-color: #e7e7e7;
+border: 0 none;
+}
+ul,
+ol {
+padding-left: 2em;
+}
+ul ul,
+ul ol,
+ol ol,
+ol ul {
+margin-top: 0;
+margin-bottom: 0;
+}
+li>p {
+margin-top: 16px;
+}
+dl {
+padding: 0;
+}
+dl dt {
+padding: 0;
+margin-top: 16px;
+font-size: 1em;
+font-style: italic;
+font-weight: bold;
+}
+dl dd {
+padding: 0 16px;
+margin-bottom: 16px;
+}
+blockquote {
+padding: 0 15px;
+color: #777;
+border-left: 4px solid #ddd;
+}
+blockquote>:first-child {
+margin-top: 0;
+}
+blockquote>:last-child {
+margin-bottom: 0;
+}
+table {
+display: block;
+width: 100%;
+overflow: auto;
+word-break: normal;
+word-break: keep-all;
+}
+table th {
+font-weight: bold;
+}
+table th,
+table td {
+padding: 6px 13px;
+border: 1px solid #ddd;
+}
+table tr {
+background-color: #fff;
+border-top: 1px solid #ccc;
+}
+table tr:nth-child(2n) {
+background-color: #f8f8f8;
+}
+img {
+max-width: 100%;
+box-sizing: content-box;
+background-color: #fff;
+}
+code {
+padding: 0;
+padding-top: 0.2em;
+padding-bottom: 0.2em;
+margin: 0;
+font-size: 85%;
+background-color: rgba(0,0,0,0.04);
+border-radius: 3px;
+}
+code:before,
+code:after {
+letter-spacing: -0.2em;
+content: "\00a0";
+}
+pre>code {
+padding: 0;
+margin: 0;
+font-size: 100%;
+word-break: normal;
+white-space: pre;
+background: transparent;
+border: 0;
+}
+.highlight {
+margin-bottom: 16px;
+}
+.highlight pre,
+pre {
+padding: 16px;
+overflow: auto;
+font-size: 85%;
+line-height: 1.45;
+background-color: #f7f7f7;
+border-radius: 3px;
+}
+.highlight pre {
+margin-bottom: 0;
+word-break: normal;
+}
+pre {
+word-wrap: normal;
+}
+pre code {
+display: inline;
+max-width: initial;
+padding: 0;
+margin: 0;
+overflow: initial;
+line-height: inherit;
+word-wrap: normal;
+background-color: transparent;
+border: 0;
+}
+pre code:before,
+pre code:after {
+content: normal;
+}
+kbd {
+display: inline-block;
+padding: 3px 5px;
+font-size: 11px;
+line-height: 10px;
+color: #555;
+vertical-align: middle;
+background-color: #fcfcfc;
+border: solid 1px #ccc;
+border-bottom-color: #bbb;
+border-radius: 3px;
+box-shadow: inset 0 -1px 0 #bbb;
+}
+.pl-c {
+color: #969896;
+}
+.pl-c1,
+.pl-s .pl-v {
+color: #0086b3;
+}
+.pl-e,
+.pl-en {
+color: #795da3;
+}
+.pl-s .pl-s1,
+.pl-smi {
+color: #333;
+}
+.pl-ent {
+color: #63a35c;
+}
+.pl-k {
+color: #a71d5d;
+}
+.pl-pds,
+.pl-s,
+.pl-s .pl-pse .pl-s1,
+.pl-sr,
+.pl-sr .pl-cce,
+.pl-sr .pl-sra,
+.pl-sr .pl-sre {
+color: #183691;
+}
+.pl-v {
+color: #ed6a43;
+}
+.pl-id {
+color: #b52a1d;
+}
+.pl-ii {
+background-color: #b52a1d;
+color: #f8f8f8;
+}
+.pl-sr .pl-cce {
+color: #63a35c;
+font-weight: bold;
+}
+.pl-ml {
+color: #693a17;
+}
+.pl-mh,
+.pl-mh .pl-en,
+.pl-ms {
+color: #1d3e81;
+font-weight: bold;
+}
+.pl-mq {
+color: #008080;
+}
+.pl-mi {
+color: #333;
+font-style: italic;
+}
+.pl-mb {
+color: #333;
+font-weight: bold;
+}
+.pl-md {
+background-color: #ffecec;
+color: #bd2c00;
+}
+.pl-mi1 {
+background-color: #eaffea;
+color: #55a532;
+}
+.pl-mdr {
+color: #795da3;
+font-weight: bold;
+}
+.pl-mo {
+color: #1d3e81;
+}
+kbd {
+display: inline-block;
+padding: 3px 5px;
+font: 11px Consolas, "Liberation Mono", Menlo, Courier, monospace;
+line-height: 10px;
+color: #555;
+vertical-align: middle;
+background-color: #fcfcfc;
+border: solid 1px #ccc;
+border-bottom-color: #bbb;
+border-radius: 3px;
+box-shadow: inset 0 -1px 0 #bbb;
+}
+.task-list-item {
+list-style-type: none;
+}
+.task-list-item+.task-list-item {
+margin-top: 3px;
+}
+.task-list-item input {
+margin: 0 0.35em 0.25em -1.6em;
+vertical-align: middle;
+}
+:checked+.radio-label {
+z-index: 1;
+position: relative;
+border-color: #4078c0;
+}
+.sourceLine {
+display: inline-block;
+}
+code .kw { color: #000000; }
+code .dt { color: #ed6a43; }
+code .dv { color: #009999; }
+code .bn { color: #009999; }
+code .fl { color: #009999; }
+code .ch { color: #009999; }
+code .st { color: #183691; }
+code .co { color: #969896; }
+code .ot { color: #0086b3; }
+code .al { color: #a61717; }
+code .fu { color: #63a35c; }
+code .er { color: #a61717; background-color: #e3d2d2; }
+code .wa { color: #000000; }
+code .cn { color: #008080; }
+code .sc { color: #008080; }
+code .vs { color: #183691; }
+code .ss { color: #183691; }
+code .im { color: #000000; }
+code .va {color: #008080; }
+code .cf { color: #000000; }
+code .op { color: #000000; }
+code .bu { color: #000000; }
+code .ex { color: #000000; }
+code .pp { color: #999999; }
+code .at { color: #008080; }
+code .do { color: #969896; }
+code .an { color: #008080; }
+code .cv { color: #008080; }
+code .in { color: #008080; }
+</style>
+<style>
+body {
+box-sizing: border-box;
+min-width: 200px;
+max-width: 980px;
+margin: 0 auto;
+padding: 45px;
+padding-top: 0px;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<h1 id="fit-xgboost-model">Fit XGBoost model</h1>
+<p>Last updated: 2025-02-18</p>
+<ul>
+<li><a href="#load-features-data">Load features data</a></li>
+<li><a href="#prepare-model">Prepare model</a></li>
+<li><a href="#fit-model">Fit model</a></li>
+</ul>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">library</span>(here)</span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="fu">library</span>(fst)</span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a><span class="fu">library</span>(data.table)</span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a><span class="fu">library</span>(forcats)</span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a><span class="fu">library</span>(tidymodels)</span>
+<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a><span class="fu">library</span>(themis)</span>
+<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a><span class="fu">library</span>(vip)</span>
+<span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a><span class="fu">library</span>(purrr)</span>
+<span id="cb1-9"><a href="#cb1-9" tabindex="-1"></a><span class="fu">library</span>(furrr)</span>
+<span id="cb1-10"><a href="#cb1-10" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" tabindex="-1"></a><span class="fu">plan</span>(multisession, <span class="at">workers =</span> <span class="dv">8</span>)</span></code></pre></div>
+<h2 id="load-features-data">Load features data</h2>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">read_fst</span>(<span class="fu">here</span>(<span class="st">&quot;data&quot;</span>, <span class="st">&quot;response_features.fst&quot;</span>))</span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a><span class="fu">setDT</span>(df)</span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a><span class="co"># Set numeric ID columns to character</span></span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a>df[, response_id <span class="sc">:=</span> <span class="fu">as.character</span>(response_id)]</span>
+<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a>df[, user_id <span class="sc">:=</span> <span class="fu">as.character</span>(user_id)]</span>
+<span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a></span>
+<span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a><span class="co"># Set `correct` to integer</span></span>
+<span id="cb2-9"><a href="#cb2-9" tabindex="-1"></a>df[, correct <span class="sc">:=</span> <span class="fu">as.integer</span>(correct)]</span>
+<span id="cb2-10"><a href="#cb2-10" tabindex="-1"></a></span>
+<span id="cb2-11"><a href="#cb2-11" tabindex="-1"></a><span class="co"># Prepare column that will be used to indicate whether the session is from the target user</span></span>
+<span id="cb2-12"><a href="#cb2-12" tabindex="-1"></a>df[, session_from_user <span class="sc">:=</span> <span class="dv">0</span>]</span>
+<span id="cb2-13"><a href="#cb2-13" tabindex="-1"></a>df[, session_from_user <span class="sc">:=</span> <span class="fu">factor</span>(session_from_user, <span class="at">levels =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>))]</span>
+<span id="cb2-14"><a href="#cb2-14" tabindex="-1"></a>df[, session_from_user <span class="sc">:=</span> <span class="fu">relevel</span>(session_from_user, <span class="at">ref =</span> <span class="st">&quot;1&quot;</span>)]</span></code></pre></div>
+<h2 id="prepare-model">Prepare model</h2>
+<p>Recipe:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a>recipe_xgb <span class="ot">&lt;-</span> <span class="fu">recipe</span>(session_from_user <span class="sc">~</span> ., <span class="at">data =</span> df) <span class="sc">|&gt;</span></span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>  <span class="fu">update_role</span>(response_id, user_id, session_id, <span class="at">new_role =</span> <span class="st">&quot;ID&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a>  <span class="fu">step_downsample</span>(session_from_user, <span class="at">under_ratio =</span> <span class="dv">1</span>) <span class="co"># Ensure training set has 1:1 ratio of same/different user</span></span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a>recipe_xgb_bigram_agnostic <span class="ot">&lt;-</span> recipe_xgb <span class="sc">|&gt;</span></span>
+<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a>  <span class="fu">step_rm</span>(<span class="fu">starts_with</span>(<span class="st">&quot;bigram_&quot;</span>))</span>
+<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a></span>
+<span id="cb3-8"><a href="#cb3-8" tabindex="-1"></a>recipe_xgb_only_performance <span class="ot">&lt;-</span> <span class="fu">recipe</span>(session_from_user <span class="sc">~</span> correct <span class="sc">+</span> reaction_time <span class="sc">+</span> alpha, <span class="at">data =</span> df) <span class="sc">|&gt;</span></span>
+<span id="cb3-9"><a href="#cb3-9" tabindex="-1"></a>  <span class="fu">step_downsample</span>(session_from_user, <span class="at">under_ratio =</span> <span class="dv">1</span>) <span class="co"># Ensure training set has 1:1 ratio of same/different user</span></span></code></pre></div>
+<p>Model specification:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="co"># XGBoost</span></span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>spec_xgb <span class="ot">&lt;-</span> <span class="fu">boost_tree</span>(</span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a>  <span class="at">tree_depth =</span> <span class="dv">4</span>, <span class="co"># default: 6</span></span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a>  <span class="at">trees =</span> <span class="dv">100</span>, <span class="co"># default: 15</span></span>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a>  <span class="at">learn_rate =</span> .<span class="dv">1</span>, <span class="co"># default: .3</span></span>
+<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a>  <span class="at">mtry =</span> <span class="dv">5</span>, <span class="co"># default: NULL (all features)</span></span>
+<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a>  <span class="at">min_n =</span> <span class="dv">1</span>, <span class="co"># default: 1</span></span>
+<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a>  <span class="at">loss_reduction =</span> <span class="fl">0.01</span>, <span class="co"># default: 0</span></span>
+<span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a>  <span class="at">sample_size =</span> .<span class="dv">8</span>, <span class="co"># default: 1</span></span>
+<span id="cb4-10"><a href="#cb4-10" tabindex="-1"></a>  <span class="at">stop_iter =</span> <span class="dv">10</span>, <span class="co"># default: Inf</span></span>
+<span id="cb4-11"><a href="#cb4-11" tabindex="-1"></a>) <span class="sc">|&gt;</span></span>
+<span id="cb4-12"><a href="#cb4-12" tabindex="-1"></a>  <span class="fu">set_mode</span>(<span class="st">&quot;classification&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb4-13"><a href="#cb4-13" tabindex="-1"></a>  <span class="fu">set_engine</span>(<span class="st">&quot;xgboost&quot;</span>)</span></code></pre></div>
+<p>Workflow:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a>wf_xgb <span class="ot">&lt;-</span> <span class="fu">workflow</span>() <span class="sc">|&gt;</span></span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>  <span class="fu">add_recipe</span>(recipe_xgb) <span class="sc">|&gt;</span></span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a>  <span class="fu">add_model</span>(spec_xgb)</span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a>wf_xgb_bigram_agnostic <span class="ot">&lt;-</span> <span class="fu">workflow</span>() <span class="sc">|&gt;</span></span>
+<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a>  <span class="fu">add_recipe</span>(recipe_xgb_bigram_agnostic) <span class="sc">|&gt;</span></span>
+<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a>  <span class="fu">add_model</span>(spec_xgb)</span>
+<span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a></span>
+<span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a>wf_xgb_only_performance <span class="ot">&lt;-</span> <span class="fu">workflow</span>() <span class="sc">|&gt;</span></span>
+<span id="cb5-10"><a href="#cb5-10" tabindex="-1"></a>  <span class="fu">add_recipe</span>(recipe_xgb_only_performance) <span class="sc">|&gt;</span></span>
+<span id="cb5-11"><a href="#cb5-11" tabindex="-1"></a>  <span class="fu">add_model</span>(spec_xgb)</span></code></pre></div>
+<h2 id="fit-model">Fit model</h2>
+<p>Fit the model per user:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a>user_ids <span class="ot">&lt;-</span> <span class="fu">unique</span>(df<span class="sc">$</span>user_id)</span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a>fits <span class="ot">&lt;-</span> <span class="fu">map_dfr</span>(user_ids, <span class="cf">function</span> (u) {</span>
+<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a>  </span>
+<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a>  <span class="co"># Fill in the session_from_user column</span></span>
+<span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a>  df[, session_from_user <span class="sc">:=</span> <span class="st">&quot;0&quot;</span>]</span>
+<span id="cb6-7"><a href="#cb6-7" tabindex="-1"></a>  df[user_id <span class="sc">==</span> u, session_from_user <span class="sc">:=</span> <span class="st">&quot;1&quot;</span>]</span>
+<span id="cb6-8"><a href="#cb6-8" tabindex="-1"></a>  </span>
+<span id="cb6-9"><a href="#cb6-9" tabindex="-1"></a>  <span class="co"># Create a train/test split using stratified sampling</span></span>
+<span id="cb6-10"><a href="#cb6-10" tabindex="-1"></a>  <span class="co"># and ensuring that responses from the same session end up in the same set</span></span>
+<span id="cb6-11"><a href="#cb6-11" tabindex="-1"></a>  <span class="fu">set.seed</span>(<span class="dv">42</span>)</span>
+<span id="cb6-12"><a href="#cb6-12" tabindex="-1"></a>  df_minority <span class="ot">&lt;-</span> df[session_from_user <span class="sc">==</span> <span class="st">&quot;1&quot;</span>]</span>
+<span id="cb6-13"><a href="#cb6-13" tabindex="-1"></a>  df_majority <span class="ot">&lt;-</span> df[session_from_user <span class="sc">==</span> <span class="st">&quot;0&quot;</span>]</span>
+<span id="cb6-14"><a href="#cb6-14" tabindex="-1"></a>  </span>
+<span id="cb6-15"><a href="#cb6-15" tabindex="-1"></a>  <span class="co"># Split the minority class manually into training/testing</span></span>
+<span id="cb6-16"><a href="#cb6-16" tabindex="-1"></a>  minority_sessions <span class="ot">&lt;-</span> df_minority[, <span class="fu">unique</span>(session_id)]</span>
+<span id="cb6-17"><a href="#cb6-17" tabindex="-1"></a>  test_minority_sessions <span class="ot">&lt;-</span> <span class="fu">sample</span>(minority_sessions, <span class="at">size =</span> <span class="fu">ceiling</span>(<span class="fl">0.2</span> <span class="sc">*</span> <span class="fu">length</span>(minority_sessions)))</span>
+<span id="cb6-18"><a href="#cb6-18" tabindex="-1"></a>  df_minority_train <span class="ot">&lt;-</span> df_minority[<span class="sc">!</span>session_id <span class="sc">%in%</span> test_minority_sessions]</span>
+<span id="cb6-19"><a href="#cb6-19" tabindex="-1"></a>  df_minority_test <span class="ot">&lt;-</span> df_minority[session_id <span class="sc">%in%</span> test_minority_sessions]</span>
+<span id="cb6-20"><a href="#cb6-20" tabindex="-1"></a>  </span>
+<span id="cb6-21"><a href="#cb6-21" tabindex="-1"></a>  <span class="co"># Split the majority class in the same way</span></span>
+<span id="cb6-22"><a href="#cb6-22" tabindex="-1"></a>  majority_sessions <span class="ot">&lt;-</span> df_majority[, <span class="fu">unique</span>(session_id)]</span>
+<span id="cb6-23"><a href="#cb6-23" tabindex="-1"></a>  test_majority_sessions <span class="ot">&lt;-</span> <span class="fu">sample</span>(majority_sessions, <span class="at">size =</span> <span class="fu">ceiling</span>(<span class="fl">0.2</span> <span class="sc">*</span> <span class="fu">length</span>(majority_sessions)))</span>
+<span id="cb6-24"><a href="#cb6-24" tabindex="-1"></a>  df_majority_train <span class="ot">&lt;-</span> df_majority[<span class="sc">!</span>session_id <span class="sc">%in%</span> test_majority_sessions]</span>
+<span id="cb6-25"><a href="#cb6-25" tabindex="-1"></a>  df_majority_test <span class="ot">&lt;-</span> df_majority[session_id <span class="sc">%in%</span> test_majority_sessions]</span>
+<span id="cb6-26"><a href="#cb6-26" tabindex="-1"></a>  </span>
+<span id="cb6-27"><a href="#cb6-27" tabindex="-1"></a>  <span class="co"># Combine the training and testing sets</span></span>
+<span id="cb6-28"><a href="#cb6-28" tabindex="-1"></a>  df_train <span class="ot">&lt;-</span> <span class="fu">rbind</span>(df_minority_train, df_majority_train)</span>
+<span id="cb6-29"><a href="#cb6-29" tabindex="-1"></a>  df_test <span class="ot">&lt;-</span> <span class="fu">rbind</span>(df_minority_test, df_majority_test)</span>
+<span id="cb6-30"><a href="#cb6-30" tabindex="-1"></a>  split <span class="ot">&lt;-</span> <span class="fu">make_splits</span>(<span class="at">x =</span> df_train, <span class="at">assessment =</span> df_test)</span>
+<span id="cb6-31"><a href="#cb6-31" tabindex="-1"></a></span>
+<span id="cb6-32"><a href="#cb6-32" tabindex="-1"></a>  <span class="co"># See the effect of preprocessing steps on the training data  </span></span>
+<span id="cb6-33"><a href="#cb6-33" tabindex="-1"></a>  <span class="co"># df_preproc &lt;- prep(recipe_xgb, training = training(split), retain = TRUE) |&gt;</span></span>
+<span id="cb6-34"><a href="#cb6-34" tabindex="-1"></a>  <span class="co">#   bake(new_data = NULL) |&gt;</span></span>
+<span id="cb6-35"><a href="#cb6-35" tabindex="-1"></a>  <span class="co">#   setDT()</span></span>
+<span id="cb6-36"><a href="#cb6-36" tabindex="-1"></a></span>
+<span id="cb6-37"><a href="#cb6-37" tabindex="-1"></a>  <span class="co"># Fit each model to the training set and evaluate it on the test set</span></span>
+<span id="cb6-38"><a href="#cb6-38" tabindex="-1"></a>  fit_model <span class="ot">&lt;-</span> <span class="cf">function</span> (wf, split, model_name) {</span>
+<span id="cb6-39"><a href="#cb6-39" tabindex="-1"></a>    </span>
+<span id="cb6-40"><a href="#cb6-40" tabindex="-1"></a>    <span class="co"># Fit the model</span></span>
+<span id="cb6-41"><a href="#cb6-41" tabindex="-1"></a>    fit <span class="ot">&lt;-</span> <span class="fu">last_fit</span>(wf, split, <span class="at">metrics =</span> <span class="fu">metric_set</span>(roc_auc, bal_accuracy, sens, spec))</span>
+<span id="cb6-42"><a href="#cb6-42" tabindex="-1"></a>    </span>
+<span id="cb6-43"><a href="#cb6-43" tabindex="-1"></a>    <span class="co"># Collect metrics</span></span>
+<span id="cb6-44"><a href="#cb6-44" tabindex="-1"></a>    metrics <span class="ot">&lt;-</span> <span class="fu">collect_metrics</span>(fit) <span class="sc">|&gt;</span></span>
+<span id="cb6-45"><a href="#cb6-45" tabindex="-1"></a>      <span class="fu">as.data.table</span>()</span>
+<span id="cb6-46"><a href="#cb6-46" tabindex="-1"></a>    metrics <span class="ot">&lt;-</span> <span class="fu">dcast</span>(metrics, .config <span class="sc">~</span> .metric, <span class="at">value.var =</span> <span class="st">&quot;.estimate&quot;</span>)</span>
+<span id="cb6-47"><a href="#cb6-47" tabindex="-1"></a>    metrics[, .config <span class="sc">:=</span> <span class="cn">NULL</span>]</span>
+<span id="cb6-48"><a href="#cb6-48" tabindex="-1"></a>    </span>
+<span id="cb6-49"><a href="#cb6-49" tabindex="-1"></a>    <span class="co"># Also make a classification at the session level, using majority voting</span></span>
+<span id="cb6-50"><a href="#cb6-50" tabindex="-1"></a>    trial_predictions <span class="ot">&lt;-</span> <span class="fu">collect_predictions</span>(fit)</span>
+<span id="cb6-51"><a href="#cb6-51" tabindex="-1"></a>    <span class="fu">setDT</span>(trial_predictions)</span>
+<span id="cb6-52"><a href="#cb6-52" tabindex="-1"></a>    trial_predictions[, session_id <span class="sc">:=</span> <span class="fu">testing</span>(split)<span class="sc">$</span>session_id] <span class="co"># Add session ID</span></span>
+<span id="cb6-53"><a href="#cb6-53" tabindex="-1"></a>    </span>
+<span id="cb6-54"><a href="#cb6-54" tabindex="-1"></a>    <span class="co"># Classify session based on a majority of trial-level predictions for that session</span></span>
+<span id="cb6-55"><a href="#cb6-55" tabindex="-1"></a>    <span class="co"># (within a session, count how often .pred_class == 1 relative to the total count of rows)</span></span>
+<span id="cb6-56"><a href="#cb6-56" tabindex="-1"></a>    session_predictions <span class="ot">&lt;-</span> trial_predictions[, .(<span class="at">est_prob_session_from_user =</span> <span class="fu">sum</span>(.pred_class <span class="sc">==</span> <span class="dv">1</span>) <span class="sc">/</span> .N), by <span class="ot">=</span> .(session_id, session_from_user)]</span>
+<span id="cb6-57"><a href="#cb6-57" tabindex="-1"></a>    session_predictions[, pred_session_from_user <span class="sc">:=</span> <span class="fu">factor</span>(<span class="fu">ifelse</span>(est_prob_session_from_user <span class="sc">&gt;</span> <span class="fl">0.5</span>, <span class="dv">1</span>, <span class="dv">0</span>), <span class="at">levels =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>))]</span>
+<span id="cb6-58"><a href="#cb6-58" tabindex="-1"></a>    session_predictions[, pred_session_from_user <span class="sc">:=</span> <span class="fu">relevel</span>(pred_session_from_user, <span class="at">ref =</span> <span class="st">&quot;1&quot;</span>)]</span>
+<span id="cb6-59"><a href="#cb6-59" tabindex="-1"></a>    </span>
+<span id="cb6-60"><a href="#cb6-60" tabindex="-1"></a>    roc_auc_session <span class="ot">&lt;-</span> <span class="fu">roc_auc</span>(session_predictions, session_from_user, est_prob_session_from_user)<span class="sc">$</span>.estimate</span>
+<span id="cb6-61"><a href="#cb6-61" tabindex="-1"></a>    bal_accuracy_session <span class="ot">&lt;-</span> <span class="fu">bal_accuracy</span>(session_predictions, session_from_user, pred_session_from_user)<span class="sc">$</span>.estimate</span>
+<span id="cb6-62"><a href="#cb6-62" tabindex="-1"></a>    sens_session <span class="ot">&lt;-</span> <span class="fu">sens</span>(session_predictions, session_from_user, pred_session_from_user)<span class="sc">$</span>.estimate</span>
+<span id="cb6-63"><a href="#cb6-63" tabindex="-1"></a>    spec_session <span class="ot">&lt;-</span> <span class="fu">spec</span>(session_predictions, session_from_user, pred_session_from_user)<span class="sc">$</span>.estimate</span>
+<span id="cb6-64"><a href="#cb6-64" tabindex="-1"></a>    </span>
+<span id="cb6-65"><a href="#cb6-65" tabindex="-1"></a>    metrics <span class="ot">&lt;-</span> <span class="fu">cbind</span>(metrics, roc_auc_session, bal_accuracy_session, sens_session, spec_session)</span>
+<span id="cb6-66"><a href="#cb6-66" tabindex="-1"></a>    </span>
+<span id="cb6-67"><a href="#cb6-67" tabindex="-1"></a>    <span class="co"># Variable importance</span></span>
+<span id="cb6-68"><a href="#cb6-68" tabindex="-1"></a>    vimp <span class="ot">&lt;-</span> <span class="fu">extract_fit_parsnip</span>(fit) <span class="sc">|&gt;</span></span>
+<span id="cb6-69"><a href="#cb6-69" tabindex="-1"></a>      <span class="fu">vi</span>(<span class="at">method =</span> <span class="st">&quot;model&quot;</span>, <span class="at">scale =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
+<span id="cb6-70"><a href="#cb6-70" tabindex="-1"></a>      <span class="fu">as.data.table</span>()</span>
+<span id="cb6-71"><a href="#cb6-71" tabindex="-1"></a>    vimp[, user_id <span class="sc">:=</span> u]</span>
+<span id="cb6-72"><a href="#cb6-72" tabindex="-1"></a>    vimp_wide <span class="ot">&lt;-</span> <span class="fu">dcast</span>(vimp, user_id <span class="sc">~</span> Variable, <span class="at">value.var =</span> <span class="st">&quot;Importance&quot;</span>)</span>
+<span id="cb6-73"><a href="#cb6-73" tabindex="-1"></a>    </span>
+<span id="cb6-74"><a href="#cb6-74" tabindex="-1"></a>    <span class="fu">return</span>(<span class="fu">cbind</span>(model_name, vimp_wide, metrics))</span>
+<span id="cb6-75"><a href="#cb6-75" tabindex="-1"></a>  }</span>
+<span id="cb6-76"><a href="#cb6-76" tabindex="-1"></a>  </span>
+<span id="cb6-77"><a href="#cb6-77" tabindex="-1"></a>  fit_xgb <span class="ot">&lt;-</span> <span class="fu">fit_model</span>(wf_xgb, split, <span class="st">&quot;full&quot;</span>)</span>
+<span id="cb6-78"><a href="#cb6-78" tabindex="-1"></a>  fit_xgb_bigram_agnostic <span class="ot">&lt;-</span> <span class="fu">fit_model</span>(wf_xgb_bigram_agnostic, split, <span class="st">&quot;bigram_agnostic&quot;</span>)</span>
+<span id="cb6-79"><a href="#cb6-79" tabindex="-1"></a>  fit_xgb_only_performance <span class="ot">&lt;-</span> <span class="fu">fit_model</span>(wf_xgb_only_performance, split, <span class="st">&quot;only_performance&quot;</span>)</span>
+<span id="cb6-80"><a href="#cb6-80" tabindex="-1"></a></span>
+<span id="cb6-81"><a href="#cb6-81" tabindex="-1"></a>  user_fits <span class="ot">&lt;-</span> <span class="fu">rbind</span>(fit_xgb, fit_xgb_bigram_agnostic, fit_xgb_only_performance, <span class="at">fill =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb6-82"><a href="#cb6-82" tabindex="-1"></a>  </span>
+<span id="cb6-83"><a href="#cb6-83" tabindex="-1"></a>  <span class="co"># Add information about training set size</span></span>
+<span id="cb6-84"><a href="#cb6-84" tabindex="-1"></a>  user_fits[, n_sessions_train <span class="sc">:=</span> <span class="fu">length</span>(minority_sessions) <span class="sc">-</span> <span class="fu">length</span>(test_minority_sessions)]</span>
+<span id="cb6-85"><a href="#cb6-85" tabindex="-1"></a>  user_fits[, n_trials_train <span class="sc">:=</span> <span class="fu">nrow</span>(df_minority_train)]</span>
+<span id="cb6-86"><a href="#cb6-86" tabindex="-1"></a>  </span>
+<span id="cb6-87"><a href="#cb6-87" tabindex="-1"></a>  <span class="fu">return</span>(user_fits)</span>
+<span id="cb6-88"><a href="#cb6-88" tabindex="-1"></a>}, <span class="at">.progress =</span> <span class="fu">interactive</span>())</span>
+<span id="cb6-89"><a href="#cb6-89" tabindex="-1"></a><span class="fu">setDT</span>(fits)</span>
+<span id="cb6-90"><a href="#cb6-90" tabindex="-1"></a></span>
+<span id="cb6-91"><a href="#cb6-91" tabindex="-1"></a><span class="fu">fwrite</span>(fits, <span class="fu">here</span>(<span class="st">&quot;data&quot;</span>, <span class="st">&quot;model_fits.csv&quot;</span>))</span></code></pre></div>
+
+</body>
+</html>
