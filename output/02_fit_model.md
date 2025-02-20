@@ -1,6 +1,6 @@
 Fit XGBoost model
 ================
-Last updated: 2025-02-18
+Last updated: 2025-02-19
 
 - [Load features data](#load-features-data)
 - [Prepare model](#prepare-model)
@@ -41,7 +41,9 @@ df[, session_from_user := relevel(session_from_user, ref = "1")]
 
 ## Prepare model
 
-Recipe:
+Recipes for the three model variants: a full model with all available
+features, a model without bigram-specifci features, and a model with
+only performance features.
 
 ``` r
 recipe_xgb <- recipe(session_from_user ~ ., data = df) |>
@@ -50,6 +52,9 @@ recipe_xgb <- recipe(session_from_user ~ ., data = df) |>
 
 recipe_xgb_bigram_agnostic <- recipe_xgb |>
   step_rm(starts_with("bigram_"))
+
+recipe_xgb_only_keystroke <- recipe_xgb |>
+  step_rm(c("correct", "reaction_time", "alpha"))
 
 recipe_xgb_only_performance <- recipe(session_from_user ~ correct + reaction_time + alpha, data = df) |>
   step_downsample(session_from_user, under_ratio = 1) # Ensure training set has 1:1 ratio of same/different user
@@ -73,7 +78,7 @@ spec_xgb <- boost_tree(
   set_engine("xgboost")
 ```
 
-Workflow:
+Workflows:
 
 ``` r
 wf_xgb <- workflow() |>
@@ -82,6 +87,10 @@ wf_xgb <- workflow() |>
 
 wf_xgb_bigram_agnostic <- workflow() |>
   add_recipe(recipe_xgb_bigram_agnostic) |>
+  add_model(spec_xgb)
+
+wf_xgb_only_keystroke <- workflow() |>
+  add_recipe(recipe_xgb_only_keystroke) |>
   add_model(spec_xgb)
 
 wf_xgb_only_performance <- workflow() |>
@@ -170,11 +179,13 @@ fits <- map_dfr(user_ids, function (u) {
     return(cbind(model_name, vimp_wide, metrics))
   }
   
+  # Fit the three variants of the model
   fit_xgb <- fit_model(wf_xgb, split, "full")
   fit_xgb_bigram_agnostic <- fit_model(wf_xgb_bigram_agnostic, split, "bigram_agnostic")
+  fit_xgb_only_keystroke <- fit_model(wf_xgb_only_keystroke, split, "only_keystroke")
   fit_xgb_only_performance <- fit_model(wf_xgb_only_performance, split, "only_performance")
 
-  user_fits <- rbind(fit_xgb, fit_xgb_bigram_agnostic, fit_xgb_only_performance, fill = TRUE)
+  user_fits <- rbind(fit_xgb, fit_xgb_bigram_agnostic, fit_xgb_only_keystroke, fit_xgb_only_performance, fill = TRUE)
   
   # Add information about training set size
   user_fits[, n_sessions_train := length(minority_sessions) - length(test_minority_sessions)]

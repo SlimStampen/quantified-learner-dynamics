@@ -20,6 +20,7 @@ library(stringr)
 library(forcats)
 library(patchwork)
 library(ggcorrplot)
+library(lmerTest)
 
 source(here("scripts", "00_plotting_functions.R"))
 ```
@@ -42,7 +43,7 @@ setDT(df)
 
 ## Performance metrics
 
-All three variants of the model:
+All variants of the model:
 ```{r plot-metrics-model-comparison}
 metrics <- fits[, .(model_name, sens, spec, roc_auc, sens_session, spec_session, roc_auc_session)]
 metrics_long <- melt(metrics, id.vars = "model_name", variable.name = "metric", value.name = "value")
@@ -53,11 +54,11 @@ metrics_long[, aggregation_level := factor(aggregation_level, levels = c("Trial-
 metrics_long[, metric := gsub("_session", "", metric)]
 
 # Replace the model names with more descriptive ones
-metrics_long[, model_name := factor(model_name, levels = c("only_performance", "bigram_agnostic", "full"),
-                                    labels = c("No key- strokes", "Bigram- agnostic", "Full"))]
+metrics_long[, model_name := factor(model_name, levels = c("only_keystroke", "only_performance", "bigram_agnostic", "full"),
+                                    labels = c("No performance", "No keystrokes", "Bigram-agnostic", "Full"))]
 
 # Change the order of the factor
-metrics_long[, model_name := fct_relevel(model_name, "Full", "Bigram- agnostic", "No key- strokes")]
+metrics_long[, model_name := fct_relevel(model_name, "Full", "Bigram-agnostic", "No performance", "No keystrokes")]
 
 # Replace the metric names with more descriptive ones
 metrics_long[, metric := factor(metric, levels = c("sens", "spec", "roc_auc"),
@@ -68,10 +69,10 @@ metrics_long[, metric := fct_relevel(metric, "Sensitivity", "Specificity", "ROC 
 
 metrics_avg <- metrics_long[, .(value = median(value)), by = .(model_name, metric, aggregation_level)]
 
-ggplot(metrics_long, aes(x = model_name, y = value, group = interaction(model_name, metric, aggregation_level))) +
-  facet_wrap(~ metric) +
-    geom_point(aes(colour = aggregation_level), alpha = .5, size = .75, position = position_jitterdodge(jitter.width = .25, dodge.width = .5)) +
-    geom_boxplot(aes(fill = aggregation_level), width = .5, alpha = .8, outlier.shape = NA) +
+p_metrics_model_comparison <- ggplot(metrics_long, aes(x = model_name, y = value, group = interaction(model_name, metric, aggregation_level))) +
+  facet_wrap(~ metric, ncol = 1) +
+  geom_point(aes(colour = aggregation_level), alpha = .5, size = .75, position = position_jitterdodge(jitter.width = .25, dodge.width = .5)) +
+  geom_boxplot(aes(fill = aggregation_level), width = .5, alpha = .8, outlier.shape = NA) +
   geom_point(data = metrics_avg, aes(x = model_name, y = value), size = 3, position = position_dodge(width = .5)) +
   geom_label(data = metrics_avg, aes(x = model_name, y = value, label = paste(format(round(value, 3), nsmall = 1))), vjust = -.15, position = position_dodge(width = .5), alpha = .5, label.size = 0) +
   scale_colour_brewer(palette = "Dark2") +
@@ -84,10 +85,35 @@ ggplot(metrics_long, aes(x = model_name, y = value, group = interaction(model_na
        fill = "Classification") +
   theme_ml() +
   theme(legend.position = "top",
-        strip.text = element_text(family = "Lato", size = 13))
+        strip.text = element_text(family = "Lato", size = 13, vjust = 1.5),
+        strip.background = element_blank())
 
-ggsave(here("output", "metrics_all_models.png"), width = 9, height = 6)
+ggsave(plot = p_metrics_model_comparison, filename = here("output", "metrics_all_models.png"), width = 6, height = 9)
 ```
+
+![](metrics_all_models.png)
+
+Are the differences between models statistically significant?
+```{r model-comparison}
+fits_stats <- copy(fits)
+fits_stats[, model_name := factor(model_name, levels = c("only_keystroke", "only_performance", "bigram_agnostic", "full"),
+                                    labels = c("No per- formance", "No key- strokes", "Bigram- agnostic", "Full"))]
+fits_stats[, model_name := fct_relevel(model_name, "Full", "Bigram- agnostic", "No per- formance", "No key- strokes")]
+
+
+# Sensitivity
+lmer(sens_session ~ model_name + (1 | user_id), data = fits_stats) |>
+  summary()
+
+# Specificity
+lmer(spec_session ~ model_name + (1 | user_id), data = fits_stats) |>
+  summary()
+
+# ROC AUC
+lmer(roc_auc_session ~ model_name + (1 | user_id), data = fits_stats) |>
+  summary()
+```
+
 
 Only the full model:
 ```{r plot-metrics-boxplot}
@@ -124,11 +150,9 @@ p_metrics <- ggplot(metrics_long, aes(x = metric, y = value, group = interaction
   theme_ml() +
   theme(legend.position = "top")
 
-p_metrics
-
-ggsave(here("output", "metrics_boxplot.png"), width = 9, height = 6)
+ggsave(plot = p_metrics, filename = here("output", "metrics_boxplot.png"), width = 9, height = 6)
 ```
-
+![](metrics_boxplot.png)
 
 ### How does performance change with the amount of training data?
 
@@ -149,7 +173,7 @@ metrics_by_user_long[, metric := factor(metric, levels = c("roc_auc", "sens", "s
 # Change the order of the factor
 metrics_by_user_long[, metric := fct_relevel(metric, "Sensitivity", "Specificity", "ROC AUC")]
 
-p_metrics_by_sessions <- ggplot(metrics_by_user_long, aes(x = n_sessions_train, y = value, group = interaction(metric, aggregation_level))) +
+p_metrics_by_session <- ggplot(metrics_by_user_long, aes(x = n_sessions_train, y = value, group = interaction(metric, aggregation_level))) +
   facet_wrap(~metric, scales = "free_y") +
   geom_point(aes(colour = aggregation_level), alpha = .1, size = .75) +
   geom_smooth(aes(colour = aggregation_level), method = "gam", se = TRUE, alpha = .25) +
@@ -161,10 +185,10 @@ p_metrics_by_sessions <- ggplot(metrics_by_user_long, aes(x = n_sessions_train, 
   theme(legend.position = "top",
         strip.text = element_text(family = "Lato", size = 13))
 
-p_metrics_by_sessions
 
-ggsave(here("output", "metrics_by_training_sessions.png"), width = 9, height = 6)
+ggsave(plot = p_metrics_by_session, filename = here("output", "metrics_by_training_sessions.png"), width = 9, height = 6)
 ```
+![](metrics_by_training_sessions.png)
 
 Also plot as a function of the number of training trials:
 ```{r plot-metrics-by-training-trials}
@@ -181,18 +205,17 @@ p_metrics_by_trials <- ggplot(metrics_by_user_long, aes(x = n_trials_train, y = 
   theme(legend.position = "top",
         strip.text = element_text(family = "Lato", size = 13))
 
-p_metrics_by_trials
-
-ggsave(here("output", "metrics_by_training_trials.png"), width = 9, height = 6)
+ggsave(plot = p_metrics_by_trials, filename = here("output", "metrics_by_training_trials.png"), width = 9, height = 6)
 ```
 
 ### Combined metrics plot
 ```{r plot-metrics-combined}
-p_metrics / p_metrics_by_trials + guides(colour = "none", fill = "none") + plot_annotation(tag_levels = "A")
+p_metrics_combined <- p_metrics / p_metrics_by_trials + guides(colour = "none", fill = "none") + plot_annotation(tag_levels = "A")
 
-ggsave(here("output", "metrics_combined.png"), width = 9, height = 9)
+ggsave(plot = p_metrics_combined, filename = here("output", "metrics_combined.png"), width = 6, height = 9)
 ```
 
+![](metrics_combined.png)
 
 ## Variable importance
 
@@ -274,25 +297,28 @@ vimp_long[, feature_type := factor(feature_type, levels = c("Learning performanc
 # How often is each feature available in the data?
 vimp_feature_availability <- vimp_long[, .(feature_availability = feature_availability[1]), by = .(variable, feature_type)]
 
-ggplot(vimp_long[!is.na(importance)], aes(x = reorder(variable, (importance)), y = importance)) +
+p_vimp <- ggplot(vimp_long[!is.na(importance)], aes(x = reorder(variable, (importance)), y = importance)) +
   geom_rect(data = NULL, aes(xmin = -Inf, xmax = Inf, ymin = 100, ymax = Inf), fill = "white", colour = "white") +
   geom_jitter(aes(colour = feature_type), alpha = .1, size = .75) +
   geom_boxplot(aes(fill = feature_type), width = .5, alpha = .8, outlier.shape = NA) +
   annotate("text", x = Inf, y = 110, label = "Feature\navailability:", hjust = 1, vjust = -.25, size = rel(3), colour = "grey40") +
-  geom_text(data = vimp_feature_availability, aes(y = 110, x = variable, label = feature_availability), hjust = 1, vjust = .5, size = rel(3), colour = "grey40") +
+  geom_text(data = vimp_feature_availability, aes(y = 115, x = variable, label = feature_availability), hjust = 1, vjust = .5, size = rel(3), colour = "grey40") +
   labs(x = "Feature",
        y = "Variable importance (scaled)",
+       title = "\n",
        colour = "Feature type",
        fill = "Feature type") +
-  scale_y_continuous(limits = c(0, 110), breaks = seq(0, 100, 25)) +
+  scale_y_continuous(limits = c(0, 115), breaks = seq(0, 100, 25)) +
   scale_colour_brewer(palette = "Dark2") +
   scale_fill_brewer(palette = "Dark2") +
   coord_flip(clip = "off") +
   theme_ml() +
   theme(axis.text.y = element_text(size = rel(.75)),
-        legend.position = "top")
+        legend.position = c(1, 1),
+        legend.justification = c(1.2, 0),
+        legend.direction = "horizontal")
 
-ggsave(here("output", "variable_importance.png"), width = 9, height = 9)
+ggsave(plot = p_vimp, filename = here("output", "variable_importance.png"), width = 6, height = 9)
 ```
 
 
@@ -300,6 +326,10 @@ ggsave(here("output", "variable_importance.png"), width = 9, height = 9)
 
 Pairwise correlation between the features in the data:
 ```{r feature-correlation}
-cor(df[, -c("response_id", "user_id", "session_id")], use = "pairwise.complete.obs") |>
+p_corr <- cor(df[, -c("response_id", "user_id", "session_id")], use = "pairwise.complete.obs") |>
   ggcorrplot()
+
+ggsave(plot = p_corr, filename = here("output", "feature_correlation.png"), width = 6, height = 6)
 ```
+
+![](feature_correlation.png)

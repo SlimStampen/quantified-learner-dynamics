@@ -602,7 +602,7 @@ padding-top: 0px;
 <body>
 
 <h1 id="fit-xgboost-model">Fit XGBoost model</h1>
-<p>Last updated: 2025-02-18</p>
+<p>Last updated: 2025-02-19</p>
 <ul>
 <li><a href="#load-features-data">Load features data</a></li>
 <li><a href="#prepare-model">Prepare model</a></li>
@@ -635,7 +635,9 @@ padding-top: 0px;
 <span id="cb2-13"><a href="#cb2-13" tabindex="-1"></a>df[, session_from_user <span class="sc">:=</span> <span class="fu">factor</span>(session_from_user, <span class="at">levels =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>))]</span>
 <span id="cb2-14"><a href="#cb2-14" tabindex="-1"></a>df[, session_from_user <span class="sc">:=</span> <span class="fu">relevel</span>(session_from_user, <span class="at">ref =</span> <span class="st">&quot;1&quot;</span>)]</span></code></pre></div>
 <h2 id="prepare-model">Prepare model</h2>
-<p>Recipe:</p>
+<p>Recipes for the three model variants: a full model with all available
+features, a model without bigram-specifci features, and a model with
+only performance features.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a>recipe_xgb <span class="ot">&lt;-</span> <span class="fu">recipe</span>(session_from_user <span class="sc">~</span> ., <span class="at">data =</span> df) <span class="sc">|&gt;</span></span>
 <span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>  <span class="fu">update_role</span>(response_id, user_id, session_id, <span class="at">new_role =</span> <span class="st">&quot;ID&quot;</span>) <span class="sc">|&gt;</span></span>
 <span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a>  <span class="fu">step_downsample</span>(session_from_user, <span class="at">under_ratio =</span> <span class="dv">1</span>) <span class="co"># Ensure training set has 1:1 ratio of same/different user</span></span>
@@ -643,8 +645,11 @@ padding-top: 0px;
 <span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a>recipe_xgb_bigram_agnostic <span class="ot">&lt;-</span> recipe_xgb <span class="sc">|&gt;</span></span>
 <span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a>  <span class="fu">step_rm</span>(<span class="fu">starts_with</span>(<span class="st">&quot;bigram_&quot;</span>))</span>
 <span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a></span>
-<span id="cb3-8"><a href="#cb3-8" tabindex="-1"></a>recipe_xgb_only_performance <span class="ot">&lt;-</span> <span class="fu">recipe</span>(session_from_user <span class="sc">~</span> correct <span class="sc">+</span> reaction_time <span class="sc">+</span> alpha, <span class="at">data =</span> df) <span class="sc">|&gt;</span></span>
-<span id="cb3-9"><a href="#cb3-9" tabindex="-1"></a>  <span class="fu">step_downsample</span>(session_from_user, <span class="at">under_ratio =</span> <span class="dv">1</span>) <span class="co"># Ensure training set has 1:1 ratio of same/different user</span></span></code></pre></div>
+<span id="cb3-8"><a href="#cb3-8" tabindex="-1"></a>recipe_xgb_only_keystroke <span class="ot">&lt;-</span> recipe_xgb <span class="sc">|&gt;</span></span>
+<span id="cb3-9"><a href="#cb3-9" tabindex="-1"></a>  <span class="fu">step_rm</span>(<span class="fu">c</span>(<span class="st">&quot;correct&quot;</span>, <span class="st">&quot;reaction_time&quot;</span>, <span class="st">&quot;alpha&quot;</span>))</span>
+<span id="cb3-10"><a href="#cb3-10" tabindex="-1"></a></span>
+<span id="cb3-11"><a href="#cb3-11" tabindex="-1"></a>recipe_xgb_only_performance <span class="ot">&lt;-</span> <span class="fu">recipe</span>(session_from_user <span class="sc">~</span> correct <span class="sc">+</span> reaction_time <span class="sc">+</span> alpha, <span class="at">data =</span> df) <span class="sc">|&gt;</span></span>
+<span id="cb3-12"><a href="#cb3-12" tabindex="-1"></a>  <span class="fu">step_downsample</span>(session_from_user, <span class="at">under_ratio =</span> <span class="dv">1</span>) <span class="co"># Ensure training set has 1:1 ratio of same/different user</span></span></code></pre></div>
 <p>Model specification:</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="co"># XGBoost</span></span>
 <span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>spec_xgb <span class="ot">&lt;-</span> <span class="fu">boost_tree</span>(</span>
@@ -659,7 +664,7 @@ padding-top: 0px;
 <span id="cb4-11"><a href="#cb4-11" tabindex="-1"></a>) <span class="sc">|&gt;</span></span>
 <span id="cb4-12"><a href="#cb4-12" tabindex="-1"></a>  <span class="fu">set_mode</span>(<span class="st">&quot;classification&quot;</span>) <span class="sc">|&gt;</span></span>
 <span id="cb4-13"><a href="#cb4-13" tabindex="-1"></a>  <span class="fu">set_engine</span>(<span class="st">&quot;xgboost&quot;</span>)</span></code></pre></div>
-<p>Workflow:</p>
+<p>Workflows:</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a>wf_xgb <span class="ot">&lt;-</span> <span class="fu">workflow</span>() <span class="sc">|&gt;</span></span>
 <span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>  <span class="fu">add_recipe</span>(recipe_xgb) <span class="sc">|&gt;</span></span>
 <span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a>  <span class="fu">add_model</span>(spec_xgb)</span>
@@ -668,9 +673,13 @@ padding-top: 0px;
 <span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a>  <span class="fu">add_recipe</span>(recipe_xgb_bigram_agnostic) <span class="sc">|&gt;</span></span>
 <span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a>  <span class="fu">add_model</span>(spec_xgb)</span>
 <span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a></span>
-<span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a>wf_xgb_only_performance <span class="ot">&lt;-</span> <span class="fu">workflow</span>() <span class="sc">|&gt;</span></span>
-<span id="cb5-10"><a href="#cb5-10" tabindex="-1"></a>  <span class="fu">add_recipe</span>(recipe_xgb_only_performance) <span class="sc">|&gt;</span></span>
-<span id="cb5-11"><a href="#cb5-11" tabindex="-1"></a>  <span class="fu">add_model</span>(spec_xgb)</span></code></pre></div>
+<span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a>wf_xgb_only_keystroke <span class="ot">&lt;-</span> <span class="fu">workflow</span>() <span class="sc">|&gt;</span></span>
+<span id="cb5-10"><a href="#cb5-10" tabindex="-1"></a>  <span class="fu">add_recipe</span>(recipe_xgb_only_keystroke) <span class="sc">|&gt;</span></span>
+<span id="cb5-11"><a href="#cb5-11" tabindex="-1"></a>  <span class="fu">add_model</span>(spec_xgb)</span>
+<span id="cb5-12"><a href="#cb5-12" tabindex="-1"></a></span>
+<span id="cb5-13"><a href="#cb5-13" tabindex="-1"></a>wf_xgb_only_performance <span class="ot">&lt;-</span> <span class="fu">workflow</span>() <span class="sc">|&gt;</span></span>
+<span id="cb5-14"><a href="#cb5-14" tabindex="-1"></a>  <span class="fu">add_recipe</span>(recipe_xgb_only_performance) <span class="sc">|&gt;</span></span>
+<span id="cb5-15"><a href="#cb5-15" tabindex="-1"></a>  <span class="fu">add_model</span>(spec_xgb)</span></code></pre></div>
 <h2 id="fit-model">Fit model</h2>
 <p>Fit the model per user:</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a>user_ids <span class="ot">&lt;-</span> <span class="fu">unique</span>(df<span class="sc">$</span>user_id)</span>
@@ -749,21 +758,23 @@ padding-top: 0px;
 <span id="cb6-74"><a href="#cb6-74" tabindex="-1"></a>    <span class="fu">return</span>(<span class="fu">cbind</span>(model_name, vimp_wide, metrics))</span>
 <span id="cb6-75"><a href="#cb6-75" tabindex="-1"></a>  }</span>
 <span id="cb6-76"><a href="#cb6-76" tabindex="-1"></a>  </span>
-<span id="cb6-77"><a href="#cb6-77" tabindex="-1"></a>  fit_xgb <span class="ot">&lt;-</span> <span class="fu">fit_model</span>(wf_xgb, split, <span class="st">&quot;full&quot;</span>)</span>
-<span id="cb6-78"><a href="#cb6-78" tabindex="-1"></a>  fit_xgb_bigram_agnostic <span class="ot">&lt;-</span> <span class="fu">fit_model</span>(wf_xgb_bigram_agnostic, split, <span class="st">&quot;bigram_agnostic&quot;</span>)</span>
-<span id="cb6-79"><a href="#cb6-79" tabindex="-1"></a>  fit_xgb_only_performance <span class="ot">&lt;-</span> <span class="fu">fit_model</span>(wf_xgb_only_performance, split, <span class="st">&quot;only_performance&quot;</span>)</span>
-<span id="cb6-80"><a href="#cb6-80" tabindex="-1"></a></span>
-<span id="cb6-81"><a href="#cb6-81" tabindex="-1"></a>  user_fits <span class="ot">&lt;-</span> <span class="fu">rbind</span>(fit_xgb, fit_xgb_bigram_agnostic, fit_xgb_only_performance, <span class="at">fill =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb6-82"><a href="#cb6-82" tabindex="-1"></a>  </span>
-<span id="cb6-83"><a href="#cb6-83" tabindex="-1"></a>  <span class="co"># Add information about training set size</span></span>
-<span id="cb6-84"><a href="#cb6-84" tabindex="-1"></a>  user_fits[, n_sessions_train <span class="sc">:=</span> <span class="fu">length</span>(minority_sessions) <span class="sc">-</span> <span class="fu">length</span>(test_minority_sessions)]</span>
-<span id="cb6-85"><a href="#cb6-85" tabindex="-1"></a>  user_fits[, n_trials_train <span class="sc">:=</span> <span class="fu">nrow</span>(df_minority_train)]</span>
-<span id="cb6-86"><a href="#cb6-86" tabindex="-1"></a>  </span>
-<span id="cb6-87"><a href="#cb6-87" tabindex="-1"></a>  <span class="fu">return</span>(user_fits)</span>
-<span id="cb6-88"><a href="#cb6-88" tabindex="-1"></a>}, <span class="at">.progress =</span> <span class="fu">interactive</span>())</span>
-<span id="cb6-89"><a href="#cb6-89" tabindex="-1"></a><span class="fu">setDT</span>(fits)</span>
-<span id="cb6-90"><a href="#cb6-90" tabindex="-1"></a></span>
-<span id="cb6-91"><a href="#cb6-91" tabindex="-1"></a><span class="fu">fwrite</span>(fits, <span class="fu">here</span>(<span class="st">&quot;data&quot;</span>, <span class="st">&quot;model_fits.csv&quot;</span>))</span></code></pre></div>
+<span id="cb6-77"><a href="#cb6-77" tabindex="-1"></a>  <span class="co"># Fit the three variants of the model</span></span>
+<span id="cb6-78"><a href="#cb6-78" tabindex="-1"></a>  fit_xgb <span class="ot">&lt;-</span> <span class="fu">fit_model</span>(wf_xgb, split, <span class="st">&quot;full&quot;</span>)</span>
+<span id="cb6-79"><a href="#cb6-79" tabindex="-1"></a>  fit_xgb_bigram_agnostic <span class="ot">&lt;-</span> <span class="fu">fit_model</span>(wf_xgb_bigram_agnostic, split, <span class="st">&quot;bigram_agnostic&quot;</span>)</span>
+<span id="cb6-80"><a href="#cb6-80" tabindex="-1"></a>  fit_xgb_only_keystroke <span class="ot">&lt;-</span> <span class="fu">fit_model</span>(wf_xgb_only_keystroke, split, <span class="st">&quot;only_keystroke&quot;</span>)</span>
+<span id="cb6-81"><a href="#cb6-81" tabindex="-1"></a>  fit_xgb_only_performance <span class="ot">&lt;-</span> <span class="fu">fit_model</span>(wf_xgb_only_performance, split, <span class="st">&quot;only_performance&quot;</span>)</span>
+<span id="cb6-82"><a href="#cb6-82" tabindex="-1"></a></span>
+<span id="cb6-83"><a href="#cb6-83" tabindex="-1"></a>  user_fits <span class="ot">&lt;-</span> <span class="fu">rbind</span>(fit_xgb, fit_xgb_bigram_agnostic, fit_xgb_only_keystroke, fit_xgb_only_performance, <span class="at">fill =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb6-84"><a href="#cb6-84" tabindex="-1"></a>  </span>
+<span id="cb6-85"><a href="#cb6-85" tabindex="-1"></a>  <span class="co"># Add information about training set size</span></span>
+<span id="cb6-86"><a href="#cb6-86" tabindex="-1"></a>  user_fits[, n_sessions_train <span class="sc">:=</span> <span class="fu">length</span>(minority_sessions) <span class="sc">-</span> <span class="fu">length</span>(test_minority_sessions)]</span>
+<span id="cb6-87"><a href="#cb6-87" tabindex="-1"></a>  user_fits[, n_trials_train <span class="sc">:=</span> <span class="fu">nrow</span>(df_minority_train)]</span>
+<span id="cb6-88"><a href="#cb6-88" tabindex="-1"></a>  </span>
+<span id="cb6-89"><a href="#cb6-89" tabindex="-1"></a>  <span class="fu">return</span>(user_fits)</span>
+<span id="cb6-90"><a href="#cb6-90" tabindex="-1"></a>}, <span class="at">.progress =</span> <span class="fu">interactive</span>())</span>
+<span id="cb6-91"><a href="#cb6-91" tabindex="-1"></a><span class="fu">setDT</span>(fits)</span>
+<span id="cb6-92"><a href="#cb6-92" tabindex="-1"></a></span>
+<span id="cb6-93"><a href="#cb6-93" tabindex="-1"></a><span class="fu">fwrite</span>(fits, <span class="fu">here</span>(<span class="st">&quot;data&quot;</span>, <span class="st">&quot;model_fits.csv&quot;</span>))</span></code></pre></div>
 
 </body>
 </html>
