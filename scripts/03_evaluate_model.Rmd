@@ -207,6 +207,7 @@ p_metrics_by_trials <- ggplot(metrics_by_user_long, aes(x = n_trials_train, y = 
 
 ggsave(plot = p_metrics_by_trials, filename = here("output", "metrics_by_training_trials.png"), width = 9, height = 6)
 ```
+![](metrics_by_training_trials.png)
 
 ### Combined metrics plot
 ```{r plot-metrics-combined}
@@ -321,6 +322,7 @@ p_vimp <- ggplot(vimp_long[!is.na(importance)], aes(x = reorder(variable, (impor
 ggsave(plot = p_vimp, filename = here("output", "variable_importance.png"), width = 6, height = 9)
 ```
 
+![](variable_importance.png)
 
 ## Feature correlation
 

@@ -330,6 +330,8 @@ ggsave(plot = p_metrics_by_trials, filename = here("output", "metrics_by_trainin
 
     ## `geom_smooth()` using formula = 'y ~ s(x, bs = "cs")'
 
+![](metrics_by_training_trials.png)
+
 ### Combined metrics plot
 
 ``` r
@@ -447,6 +449,8 @@ p_vimp <- ggplot(vimp_long[!is.na(importance)], aes(x = reorder(variable, (impor
 
 ggsave(plot = p_vimp, filename = here("output", "variable_importance.png"), width = 6, height = 9)
 ```
+
+![](variable_importance.png)
 
 ## Feature correlation
 
