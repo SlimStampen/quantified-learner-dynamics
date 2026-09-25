@@ -4,6 +4,15 @@ Using quantified learner dynamics to preserve the integrity of learning and know
 
 <img src="flowchart.png" alt="Flowchart" width="400"/>
 
+## Paper
+
+This repository accompanies a paper:
+
+van der Velde, M., Krambeer, M., & van Rijn, H. (2025). Preserving the integrity of study behaviour in online retrieval practice using quantified learner dynamics. Proceedings of the 18th International Conference on Educational Data Mining, 680--687. [https://doi.org/10.5281/zenodo.15870147](https://doi.org/10.5281/zenodo.15870147)
+
+Please refer to the paper for a detailed description of the methods and results.
+
+
 ## Notebooks
 
 - [Fitting the XGBoost model](output/02_fit_model.md)
