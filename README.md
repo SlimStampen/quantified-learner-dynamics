@@ -30,3 +30,9 @@ Do all of the above:
 ```bash
 make all
 ```
+
+## Funding
+
+This project is co-financed by the National Education Lab AI.
+
+<a href="https://www.ru.nl/nolai"><img src="nolai.webp" alt="NOLAI logo" width="100"/></a>
